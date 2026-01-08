@@ -1,15 +1,18 @@
 import { PrismaClient } from "@/generated/prisma";
-import { withAccelerate } from "@prisma/extension-accelerate";
+import { PrismaPg } from "@prisma/adapter-pg";
+import "dotenv/config";
 
 const globalForPrisma = global as unknown as {
     prisma: PrismaClient;
 };
 
+const connectionString = `${process.env.DATABASE_URL}`;
+
+const adapter = new PrismaPg({ connectionString });
+
 const prisma =
     globalForPrisma.prisma ||
-    new PrismaClient({ log: ["query", "error", "warn"] }).$extends(
-        withAccelerate()
-    );
+    new PrismaClient({ adapter, log: ["query", "error", "warn"] });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 

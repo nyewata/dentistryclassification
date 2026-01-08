@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -8,7 +10,15 @@ import {
 } from "@/components/ui/input-group";
 import { IconAsterisk, IconAt, IconUser } from "@tabler/icons-react";
 
+import { useActionState } from "react";
+import { signUpWithEmail } from "@/app/actions/auth/signup";
+
 function LoginPage() {
+    const [state, formAction, isPending] = useActionState(
+        signUpWithEmail,
+        null
+    );
+
     return (
         <div className="flex flex-col gap-8 w-80">
             <div className="text-2xl text-center">
@@ -16,23 +26,23 @@ function LoginPage() {
                 <span className="text-primary">signup</span>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <form className="flex flex-col gap-4" action={formAction}>
                 <InputGroup>
-                    <InputGroupInput placeholder="full name" />
+                    <InputGroupInput placeholder="full name" name="name"/>
                     <InputGroupAddon align={"inline-end"}>
                         <IconUser className="size-3" />
                     </InputGroupAddon>
                 </InputGroup>
 
                 <InputGroup>
-                    <InputGroupInput type="email" placeholder="email" />
+                    <InputGroupInput type="email" placeholder="email" name="email" />
                     <InputGroupAddon align={"inline-end"}>
                         <IconAt className="size-3" />
                     </InputGroupAddon>
                 </InputGroup>
 
                 <InputGroup>
-                    <InputGroupInput type="password" placeholder="password" />
+                    <InputGroupInput type="password" placeholder="password" name="password" />
                     <InputGroupAddon align={"inline-end"}>
                         <IconAsterisk className="size-3" />
                     </InputGroupAddon>
@@ -42,14 +52,17 @@ function LoginPage() {
                     <InputGroupInput
                         type="password"
                         placeholder="repeat password"
+                        name="password_repeat"
                     />
                     <InputGroupAddon align={"inline-end"}>
                         <IconAsterisk className="size-3" />
                     </InputGroupAddon>
                 </InputGroup>
 
-                <Button size={"lg"}>Signup</Button>
-            </div>
+                <Button type="submit" disabled={isPending} size={"lg"}>
+                    {isPending ? 'Creating account...' : 'Signup'}
+                </Button>
+            </form>
 
             <Link
                 href={"/login"}
@@ -57,6 +70,12 @@ function LoginPage() {
             >
                 Have an account? Log In
             </Link>
+
+            {state?.error && (
+                <div className="rounded-md px-3 py-2 text-sm text-red-500">
+                    {state.error}
+                </div>
+            )}
         </div>
     );
 }
