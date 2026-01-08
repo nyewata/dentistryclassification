@@ -16,8 +16,18 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import React, { ReactNode } from "react";
+import { redirect } from "next/navigation";
+import { authServer } from "@/lib/auth/server";
 
-function DoctorsLayout({ children }: { children: ReactNode }) {
+async function DoctorsLayout({ children }: { children: ReactNode }) {
+    const { data } = await authServer.getSession();
+
+    if (!data || !data.user) {
+        redirect("/login"); // Redirect to login page
+    }
+
+    const { user } = data;
+
     return (
         <div className="h-screen w-full flex">
             <div className="z-10 flex gap-1.5 text-primary absolute right-8 top-8 p-2 border border-gray-300 rounded-4xl">
@@ -28,7 +38,7 @@ function DoctorsLayout({ children }: { children: ReactNode }) {
                             variant={"outline"}
                             // size={"icon"}
                         >
-                            <IconUser /> Ibrahim Ame
+                            <IconUser /> {user.name}
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
