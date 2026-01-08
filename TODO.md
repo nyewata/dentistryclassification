@@ -6,3 +6,11 @@ Authentication
 * Set notifications if validations doesn't match
 
 Dashboard
+* Dashboard view looks ready
+
+* Notifications
+* User Information
+* Past prediction reviews
+* charts
+* ongoing task queue information
+* transformer logic
