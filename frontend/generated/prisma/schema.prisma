@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String         @id @db.Uuid
+  predictions  Predictions[]
+  userSettings UserSettings[]
+}
+
+enum ProcessStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum ProcessKind {
+  PREDICTION
+  XAI
+  GRADCAM
+}
+
+model Models {
+  id        String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  version   String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @default(now()) @updatedAt
+  model     Predictions[]
+
+  @@unique([name, version])
+}
+
+model Predictions {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+  modelId        String        @db.Uuid
+  status         ProcessStatus @default(PENDING)
+  ownerId        String        @db.Uuid
+  xairesults     XAI[]
+  gradcamresults GradCAM[]
+  owner          User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  model          Models        @relation(fields: [modelId], references: [id], onDelete: Cascade)
+}
+
+model XAI {
+  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
+  status       ProcessStatus @default(PENDING)
+  predictionId String        @db.Uuid
+  xairesults   Predictions   @relation(fields: [predictionId], references: [id], onDelete: Cascade)
+}
+
+model GradCAM {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+  status         ProcessStatus @default(PENDING)
+  predictionId   String        @db.Uuid
+  gradcamresults Predictions   @relation(fields: [predictionId], references: [id], onDelete: Cascade)
+}
+
+model Processes {
+  id        String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  status    ProcessStatus @default(PENDING)
+  type      String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @default(now()) @updatedAt
+}
+
+enum LANGUAGEOPTIONS {
+  EN
+  TR
+}
+
+model UserSettings {
+  id                        String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  theme                     String          @default("light")
+  language                  LANGUAGEOPTIONS @default(EN)
+  ownerId                   String          @db.Uuid
+  preferredBasicModel       String          @default("default-model") // keep a proper-id, set on user when models are avaialble on load
+  preferredTransformerModel String          @default("default-transformer-model") // keep a proper-id, set on user when models are avaialble on load
+  owner                     User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @default(now()) @updatedAt
+
+  @@unique([ownerId])
+}

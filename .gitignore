@@ -1,0 +1,4 @@
+dataset/*/
+training/results
+*.zip
+.vscode
