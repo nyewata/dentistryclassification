@@ -17,6 +17,8 @@
     "@tabler/icons-react": "^3.36.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "gsap": "^3.14.2",
+    "motion": "^12.35.1",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
