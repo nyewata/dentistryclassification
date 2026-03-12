@@ -46,21 +46,11 @@ function SignupPage() {
             return;
         }
 
-        // #region agent log
-        console.log("[DEBUG-9f6369] signup-client-submit");
-        fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',location:'signup/page.tsx:50',message:'signup-client-submit',data:{},timestamp:Date.now(),hypothesisId:'H1-fix'})}).catch(()=>{});
-        // #endregion
-
         const { error: signUpError, data } = await authClient.signUp.email({
             email,
             name,
             password,
         });
-
-        // #region agent log
-        console.log("[DEBUG-9f6369] signup-client-result", { hasError: !!signUpError, errorMessage: signUpError?.message, hasData: !!data });
-        fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',location:'signup/page.tsx:60',message:'signup-client-result',data:{hasError:!!signUpError,errorMessage:signUpError?.message,hasData:!!data},timestamp:Date.now(),hypothesisId:'H1-fix'})}).catch(()=>{});
-        // #endregion
 
         if (signUpError) {
             setError(signUpError.message || "Failed to create account. Please try again.");
@@ -77,6 +67,7 @@ function SignupPage() {
             }
         }
 
+        setIsPending(false);
         setSuccess("Account created successfully! Redirecting to login...");
         setTimeout(() => router.push("/login"), 2500);
     }

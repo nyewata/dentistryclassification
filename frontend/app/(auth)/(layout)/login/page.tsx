@@ -20,20 +20,10 @@ function LoginPage() {
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
 
-        // #region agent log
-        console.log("[DEBUG-9f6369] login-client-submit", { email: email?.substring(0, 3) + "***" });
-        fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',location:'login/page.tsx:25',message:'login-client-submit',data:{},timestamp:Date.now(),hypothesisId:'H1-fix'})}).catch(()=>{});
-        // #endregion
-
         const { error: signInError } = await authClient.signIn.email({
             email,
             password,
         });
-
-        // #region agent log
-        console.log("[DEBUG-9f6369] login-client-result", { hasError: !!signInError, errorMessage: signInError?.message });
-        fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',location:'login/page.tsx:33',message:'login-client-result',data:{hasError:!!signInError,errorMessage:signInError?.message},timestamp:Date.now(),hypothesisId:'H1-fix'})}).catch(()=>{});
-        // #endregion
 
         if (signInError) {
             setError(signInError.message || "Failed to sign in. Try again.");
@@ -42,6 +32,7 @@ function LoginPage() {
         }
 
         router.push("/doctor");
+        setIsPending(false);
     }
 
     return (
