@@ -1,26 +1,85 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { IconAsterisk, IconAt, IconUser, IconCheck, IconAlertTriangle } from "@tabler/icons-react";
-import { signUpWithEmail } from "@/app/actions/auth/signup";
+import { authClient } from "@/lib/auth/client";
+import { createUserRecord } from "@/app/actions/auth/create-user-record";
 
 function SignupPage() {
-    const [state, formAction, isPending] = useActionState(
-        signUpWithEmail,
-        null
-    );
     const router = useRouter();
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
+    const [isPending, setIsPending] = useState(false);
 
-    useEffect(() => {
-        if (state?.success) {
-            const timer = setTimeout(() => {
-                router.push("/login");
-            }, 2500);
-            return () => clearTimeout(timer);
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        setError(null);
+        setSuccess(null);
+        setIsPending(true);
+
+        const formData = new FormData(e.currentTarget);
+        const name = (formData.get("name") as string)?.trim();
+        const email = (formData.get("email") as string)?.trim();
+        const password = formData.get("password") as string;
+        const passwordRepeat = formData.get("password_repeat") as string;
+
+        if (!name || name.length < 2) {
+            setError("Please enter your full name.");
+            setIsPending(false);
+            return;
         }
-    }, [state?.success, router]);
+        if (!email) {
+            setError("Email address is required.");
+            setIsPending(false);
+            return;
+        }
+        if (!password || password.length < 8) {
+            setError("Password must be at least 8 characters long.");
+            setIsPending(false);
+            return;
+        }
+        if (password !== passwordRepeat) {
+            setError("Passwords do not match.");
+            setIsPending(false);
+            return;
+        }
+
+        // #region agent log
+        console.log("[DEBUG-9f6369] signup-client-submit");
+        fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',location:'signup/page.tsx:50',message:'signup-client-submit',data:{},timestamp:Date.now(),hypothesisId:'H1-fix'})}).catch(()=>{});
+        // #endregion
+
+        const { error: signUpError, data } = await authClient.signUp.email({
+            email,
+            name,
+            password,
+        });
+
+        // #region agent log
+        console.log("[DEBUG-9f6369] signup-client-result", { hasError: !!signUpError, errorMessage: signUpError?.message, hasData: !!data });
+        fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',location:'signup/page.tsx:60',message:'signup-client-result',data:{hasError:!!signUpError,errorMessage:signUpError?.message,hasData:!!data},timestamp:Date.now(),hypothesisId:'H1-fix'})}).catch(()=>{});
+        // #endregion
+
+        if (signUpError) {
+            setError(signUpError.message || "Failed to create account. Please try again.");
+            setIsPending(false);
+            return;
+        }
+
+        if (data?.user) {
+            const result = await createUserRecord(data.user.id);
+            if (result.error) {
+                setError(result.error);
+                setIsPending(false);
+                return;
+            }
+        }
+
+        setSuccess("Account created successfully! Redirecting to login...");
+        setTimeout(() => router.push("/login"), 2500);
+    }
 
     return (
         <div className="flex flex-col gap-6 w-[340px]">
@@ -34,21 +93,21 @@ function SignupPage() {
                 </p>
             </div>
 
-            {state?.error && (
+            {error && (
                 <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                     <IconAlertTriangle size={18} className="shrink-0 mt-0.5" />
-                    <span>{state.error}</span>
+                    <span>{error}</span>
                 </div>
             )}
 
-            {state?.success && (
+            {success && (
                 <div className="flex items-start gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
                     <IconCheck size={18} className="shrink-0 mt-0.5" />
-                    <span>{state.success}</span>
+                    <span>{success}</span>
                 </div>
             )}
 
-            <form className="flex flex-col gap-4" action={formAction}>
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1.5">
                         Full Name
@@ -115,7 +174,7 @@ function SignupPage() {
 
                 <button
                     type="submit"
-                    disabled={isPending || !!state?.success}
+                    disabled={isPending || !!success}
                     className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                     {isPending ? "Creating account..." : "Sign Up"}
