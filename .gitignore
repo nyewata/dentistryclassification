@@ -2,4 +2,8 @@ dataset/*/
 training/results
 *.zip
 .vscode
+.env
+.env.local
 *.md
+.DS_Store
+**/.DS_Store
