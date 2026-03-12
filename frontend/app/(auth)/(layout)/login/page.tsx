@@ -19,20 +19,33 @@ function LoginPage() {
         const formData = new FormData(e.currentTarget);
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
+        try {
+            const { error: signInError } = await authClient.signIn.email({
+                email,
+                password,
+            });
 
-        const { error: signInError } = await authClient.signIn.email({
-            email,
-            password,
-        });
+            // #region agent log
+            fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',runId:'login-submit',hypothesisId:'H6',location:'login/page.tsx:31',message:'signin-result',data:{hasError:!!signInError,errorMessage:signInError?.message},timestamp:Date.now()})}).catch(()=>{});
+            // #endregion
 
-        if (signInError) {
-            setError(signInError.message || "Failed to sign in. Try again.");
+            if (signInError) {
+                setError(signInError.message || "Invalid email or password.");
+                return;
+            }
+
+            router.push("/doctor");
+        } catch (caughtError) {
+            const message =
+                caughtError instanceof Error ? caughtError.message : "Login failed. Please try again.";
+            setError(message || "Login failed. Please try again.");
+
+            // #region agent log
+            fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',runId:'login-submit',hypothesisId:'H6',location:'login/page.tsx:46',message:'signin-threw',data:{errorMessage:message},timestamp:Date.now()})}).catch(()=>{});
+            // #endregion
+        } finally {
             setIsPending(false);
-            return;
         }
-
-        router.push("/doctor");
-        setIsPending(false);
     }
 
     return (

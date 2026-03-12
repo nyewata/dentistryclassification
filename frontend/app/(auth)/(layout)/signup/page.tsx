@@ -46,30 +46,43 @@ function SignupPage() {
             return;
         }
 
-        const { error: signUpError, data } = await authClient.signUp.email({
-            email,
-            name,
-            password,
-        });
+        try {
+            const { error: signUpError, data } = await authClient.signUp.email({
+                email,
+                name,
+                password,
+            });
 
-        if (signUpError) {
-            setError(signUpError.message || "Failed to create account. Please try again.");
-            setIsPending(false);
-            return;
-        }
+            // #region agent log
+            fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',runId:'signup-submit',hypothesisId:'H6',location:'signup/page.tsx:58',message:'signup-result',data:{hasError:!!signUpError,errorMessage:signUpError?.message,hasData:!!data},timestamp:Date.now()})}).catch(()=>{});
+            // #endregion
 
-        if (data?.user) {
-            const result = await createUserRecord(data.user.id);
-            if (result.error) {
-                setError(result.error);
-                setIsPending(false);
+            if (signUpError) {
+                setError(signUpError.message || "Failed to create account. Please try again.");
                 return;
             }
-        }
 
-        setIsPending(false);
-        setSuccess("Account created successfully! Redirecting to login...");
-        setTimeout(() => router.push("/login"), 2500);
+            if (data?.user) {
+                const result = await createUserRecord(data.user.id);
+                if (result.error) {
+                    setError(result.error);
+                    return;
+                }
+            }
+
+            setSuccess("Account created successfully! Redirecting to login...");
+            setTimeout(() => router.push("/login"), 2500);
+        } catch (caughtError) {
+            const message =
+                caughtError instanceof Error ? caughtError.message : "Signup failed. Please try again.";
+            setError(message || "Signup failed. Please try again.");
+
+            // #region agent log
+            fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',runId:'signup-submit',hypothesisId:'H6',location:'signup/page.tsx:82',message:'signup-threw',data:{errorMessage:message},timestamp:Date.now()})}).catch(()=>{});
+            // #endregion
+        } finally {
+            setIsPending(false);
+        }
     }
 
     return (
