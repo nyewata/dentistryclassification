@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
     env: {
         NEON_AUTH_BASE_URL: process.env.NEON_AUTH_BASE_URL,
     },
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "lh3.googleusercontent.com",
+                pathname: "/**",
+            },
+        ],
+    },
 };
 
 export default nextConfig;

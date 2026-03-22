@@ -7,11 +7,11 @@ export function PageTitle({
 }) {
     return (
         <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+            <h1 className="text-3xl font-bold tracking-tight text-[#191c1c]">
                 {children}
             </h1>
             {subtitle && (
-                <p className="mt-1 text-sm text-gray-500">{subtitle}</p>
+                <p className="mt-1 text-sm text-[#3e4947]">{subtitle}</p>
             )}
         </div>
     );

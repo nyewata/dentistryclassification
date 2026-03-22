@@ -19,44 +19,59 @@ function LoginPage() {
         const formData = new FormData(e.currentTarget);
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
-        try {
-            const { error: signInError } = await authClient.signIn.email({
-                email,
-                password,
-            });
 
-            // #region agent log
-            fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',runId:'login-submit',hypothesisId:'H6',location:'login/page.tsx:31',message:'signin-result',data:{hasError:!!signInError,errorMessage:signInError?.message},timestamp:Date.now()})}).catch(()=>{});
-            // #endregion
+        try {
+            let signInError: { message?: string } | null = null;
+            try {
+                const result = await authClient.signIn.email({
+                    email,
+                    password,
+                });
+                signInError = result.error ?? null;
+            } catch (err) {
+                signInError = {
+                    message:
+                        err instanceof Error ? err.message : "Failed to sign in.",
+                };
+            }
 
             if (signInError) {
                 setError(signInError.message || "Invalid email or password.");
                 return;
             }
 
+            try {
+                await authClient.getSession();
+            } catch {
+                /* non-fatal; cookies may still be set */
+            }
+
+            if (typeof window !== "undefined") {
+                window.location.assign("/doctor");
+                return;
+            }
+
             router.push("/doctor");
         } catch (caughtError) {
             const message =
-                caughtError instanceof Error ? caughtError.message : "Login failed. Please try again.";
+                caughtError instanceof Error
+                    ? caughtError.message
+                    : "Login failed. Please try again.";
             setError(message || "Login failed. Please try again.");
-
-            // #region agent log
-            fetch('http://127.0.0.1:7353/ingest/2cc87a84-6d44-4b79-8c5a-cc3886685a54',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9f6369'},body:JSON.stringify({sessionId:'9f6369',runId:'login-submit',hypothesisId:'H6',location:'login/page.tsx:46',message:'signin-threw',data:{errorMessage:message},timestamp:Date.now()})}).catch(()=>{});
-            // #endregion
         } finally {
             setIsPending(false);
         }
     }
 
     return (
-        <div className="flex flex-col gap-6 w-[340px]">
-            <div className="text-center mb-2">
-                <h1 className="text-2xl font-semibold text-gray-800">
+        <div className="flex w-[340px] flex-col gap-6">
+            <div className="mb-2 text-center">
+                <h1 className="text-2xl font-semibold text-[#191c1c]">
                     Welcome to{" "}
-                    <span className="text-blue-600">DentistryAI</span>
+                    <span className="text-[#004d48]">Dentistry Classification</span>
                 </h1>
-                <p className="text-sm text-gray-500 mt-1">
-                    Sign in to your account
+                <p className="mt-1 text-sm text-[#3e4947]">
+                    Sign in to your doctor workspace
                 </p>
             </div>
 
@@ -69,7 +84,7 @@ function LoginPage() {
 
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                    <label className="mb-1.5 block text-xs font-medium text-[#3e4947]">
                         Email
                     </label>
                     <div className="relative">
@@ -78,14 +93,14 @@ function LoginPage() {
                             name="email"
                             placeholder="you@example.com"
                             required
-                            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 pr-9 text-sm text-gray-900 placeholder:text-gray-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                            className="w-full rounded-lg border border-[#bec9c7]/60 bg-white px-3 py-2.5 pr-9 text-sm text-[#191c1c] outline-none transition-all placeholder:text-[#6e7977] focus:border-[#004d48] focus:ring-2 focus:ring-[#a1f1e9]/50"
                         />
                         <IconAt size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     </div>
                 </div>
 
                 <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                    <label className="mb-1.5 block text-xs font-medium text-[#3e4947]">
                         Password
                     </label>
                     <div className="relative">
@@ -94,7 +109,7 @@ function LoginPage() {
                             name="password"
                             placeholder="Enter your password"
                             required
-                            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 pr-9 text-sm text-gray-900 placeholder:text-gray-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                            className="w-full rounded-lg border border-[#bec9c7]/60 bg-white px-3 py-2.5 pr-9 text-sm text-[#191c1c] outline-none transition-all placeholder:text-[#6e7977] focus:border-[#004d48] focus:ring-2 focus:ring-[#a1f1e9]/50"
                         />
                         <IconAsterisk size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     </div>
@@ -102,7 +117,7 @@ function LoginPage() {
 
                 <Link
                     href="/forgotpassword"
-                    className="text-blue-600 font-medium text-xs hover:text-blue-700 transition-colors self-start"
+                    className="self-start text-xs font-medium text-[#004d48] transition-colors hover:text-[#006761]"
                 >
                     Forgot password?
                 </Link>
@@ -110,17 +125,17 @@ function LoginPage() {
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="clinical-gradient w-full rounded-full px-4 py-2.5 text-sm font-medium text-white shadow-md shadow-[#004d48]/20 transition-all hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-[#a1f1e9]/60 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {isPending ? "Logging in..." : "Log In"}
                 </button>
             </form>
 
-            <p className="text-sm text-center text-gray-500">
+            <p className="text-center text-sm text-[#3e4947]">
                 Don&apos;t have an account?{" "}
                 <Link
                     href="/signup"
-                    className="text-blue-600 font-medium hover:text-blue-700 transition-colors"
+                    className="font-medium text-[#004d48] transition-colors hover:text-[#006761]"
                 >
                     Sign Up
                 </Link>

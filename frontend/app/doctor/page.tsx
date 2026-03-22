@@ -33,74 +33,78 @@ function DoctorPage() {
             </PageTitle>
             <PageContent>
                 {/* Top row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                     {/* Past Predictions */}
                     <Link
                         href="/doctor/pastpredictions"
-                        className="group rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:shadow-lg hover:border-blue-200"
+                        className="group rounded-2xl border border-[#bec9c7]/40 bg-white p-6 shadow-sm transition-all hover:border-[#004d48]/25 hover:shadow-lg"
                     >
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 text-blue-600">
+                        <div className="mb-4 flex items-center justify-between">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f3f4f3] text-[#004d48]">
                                 <IconHistory size={20} />
                             </div>
                             <IconArrowRight
                                 size={18}
-                                className="text-gray-300 group-hover:text-blue-600 transition-colors"
+                                className="text-[#bec9c7] transition-colors group-hover:text-[#004d48]"
                             />
                         </div>
-                        <div className="text-4xl font-bold text-gray-900 mb-1">
+                        <div className="mb-1 text-4xl font-bold text-[#191c1c]">
                             8
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-[#3e4947]">
                             Total predictions
                         </div>
                     </Link>
 
-                    {/* Predict Now */}
+                    {/* Predict Now — landing “technology” style: gradient + soft glow */}
                     <Link
                         href="/doctor/predict"
-                        className="group rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 p-6 text-white transition-all hover:shadow-lg hover:shadow-blue-200 col-span-1"
+                        className="group relative col-span-1 overflow-hidden rounded-2xl p-6 text-white shadow-xl shadow-[#004d48]/20 ring-1 ring-white/15 transition-all hover:shadow-2xl hover:shadow-[#004d48]/30 clinical-gradient"
                     >
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/20">
-                                <IconUpload size={20} />
+                        <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
+                        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+                        <div className="relative">
+                            <div className="mb-4 flex items-center justify-between">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 ring-1 ring-white/25">
+                                    <IconUpload size={20} />
+                                </div>
+                                <IconArrowRight
+                                    size={18}
+                                    className="text-[#a1f1e9]/90 transition-transform group-hover:translate-x-1"
+                                />
                             </div>
-                            <IconArrowRight
-                                size={18}
-                                className="text-blue-200 group-hover:translate-x-1 transition-transform"
-                            />
-                        </div>
-                        <div className="text-lg font-semibold mb-1">
-                            New Prediction
-                        </div>
-                        <div className="text-sm text-blue-100">
-                            Upload an image and classify
+                            <div className="mb-1 text-lg font-semibold tracking-tight">
+                                New Prediction
+                            </div>
+                            <div className="text-sm font-light text-[#a1f1e9]/95">
+                                Upload · choose model · classify
+                            </div>
                         </div>
                     </Link>
 
                     {/* Stats */}
-                    <div className="rounded-2xl border border-gray-200 bg-white p-6">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600">
+                    <div className="rounded-2xl border border-[#bec9c7]/40 bg-white p-6 shadow-sm">
+                        <div className="mb-4 flex items-center justify-between">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#e8f5f3] text-[#006761]">
                                 <IconChartBar size={20} />
                             </div>
                         </div>
-                        <div className="text-4xl font-bold text-gray-900 mb-1">
+                        <div className="mb-1 text-4xl font-bold text-[#191c1c]">
                             94%
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-[#3e4947]">
                             Avg. confidence score
                         </div>
                     </div>
                 </div>
 
                 {/* Bottom row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                     {/* Available Models */}
-                    <div className="rounded-2xl border border-gray-200 bg-white p-6">
-                        <div className="flex items-center gap-2 mb-5">
-                            <IconCpu size={18} className="text-blue-600" />
-                            <h3 className="font-semibold text-gray-900 text-sm">
+                    <div className="rounded-2xl border border-[#bec9c7]/40 bg-white p-6 shadow-sm">
+                        <div className="mb-5 flex items-center gap-2">
+                            <IconCpu size={18} className="text-[#004d48]" />
+                            <h3 className="text-sm font-semibold text-[#191c1c]">
                                 Available Models
                             </h3>
                         </div>
@@ -109,12 +113,12 @@ function DoctorPage() {
                             {models.map((model) => (
                                 <div
                                     key={model.name}
-                                    className="flex items-center justify-between rounded-lg bg-gray-50 px-4 py-2.5"
+                                    className="flex items-center justify-between rounded-lg bg-[#f3f4f3] px-4 py-2.5"
                                 >
-                                    <span className="text-sm text-gray-700 font-medium">
+                                    <span className="text-sm font-medium text-[#191c1c]">
                                         {model.name}
                                     </span>
-                                    <span className="text-[11px] text-gray-400 uppercase tracking-wider">
+                                    <span className="text-[11px] uppercase tracking-wider text-[#6e7977]">
                                         .{model.type}
                                     </span>
                                 </div>
@@ -123,10 +127,10 @@ function DoctorPage() {
                     </div>
 
                     {/* Ongoing Tasks */}
-                    <div className="rounded-2xl border border-gray-200 bg-white p-6">
-                        <div className="flex items-center gap-2 mb-5">
-                            <Spinner className="text-blue-600" />
-                            <h3 className="font-semibold text-gray-900 text-sm">
+                    <div className="rounded-2xl border border-[#bec9c7]/40 bg-white p-6 shadow-sm">
+                        <div className="mb-5 flex items-center gap-2">
+                            <Spinner className="text-[#006761]" />
+                            <h3 className="text-sm font-semibold text-[#191c1c]">
                                 Ongoing Tasks
                             </h3>
                         </div>
@@ -135,16 +139,16 @@ function DoctorPage() {
                             {tasks.map((task) => (
                                 <div key={task.name} className="space-y-2">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-gray-700">
+                                        <span className="text-sm text-[#3e4947]">
                                             {task.name}
                                         </span>
-                                        <span className="text-xs font-semibold text-blue-600">
+                                        <span className="text-xs font-semibold text-[#004d48]">
                                             {task.progress}%
                                         </span>
                                     </div>
-                                    <div className="h-1.5 w-full rounded-full bg-gray-100">
+                                    <div className="h-1.5 w-full rounded-full bg-[#e7e8e7]">
                                         <div
-                                            className="h-full rounded-full bg-blue-600 transition-all"
+                                            className="h-full rounded-full bg-[#006761] transition-all"
                                             style={{ width: `${task.progress}%` }}
                                         />
                                     </div>
@@ -156,22 +160,22 @@ function DoctorPage() {
                     {/* Transformer Predict */}
                     <Link
                         href="/doctor/transformerpredict"
-                        className="group rounded-2xl border-2 border-dashed border-blue-300 bg-blue-50/50 p-6 transition-all hover:border-blue-400 hover:bg-blue-50"
+                        className="group rounded-2xl border-2 border-dashed border-[#004d48]/35 bg-[#f3f4f3]/80 p-6 transition-all hover:border-[#006761] hover:bg-[#e8f5f3]/60"
                     >
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-100 text-blue-600">
+                        <div className="mb-4 flex items-center justify-between">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#004d48] shadow-sm ring-1 ring-[#bec9c7]/30">
                                 <IconBrandDatabricks size={20} />
                             </div>
                             <IconArrowRight
                                 size={18}
-                                className="text-blue-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"
+                                className="text-[#bec9c7] transition-all group-hover:translate-x-1 group-hover:text-[#004d48]"
                             />
                         </div>
-                        <div className="text-lg font-semibold text-blue-700 mb-1">
+                        <div className="mb-1 text-lg font-semibold text-[#191c1c]">
                             Transformer Predict
                         </div>
-                        <div className="text-sm text-blue-500">
-                            Use transformer-based classification
+                        <div className="text-sm text-[#3e4947]">
+                            Transformer-based classification
                         </div>
                     </Link>
                 </div>

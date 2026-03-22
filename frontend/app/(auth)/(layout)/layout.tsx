@@ -14,7 +14,7 @@ function AuthLayout({ children }: { children: ReactNode }) {
                     alt="Front Teeth Shot"
                     className="object-cover"
                 />
-                <div className="absolute inset-0 bg-blue-600/20" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#004d48]/45 via-[#006761]/25 to-transparent" />
                 <div className="absolute inset-0 p-8 flex flex-col">
                     <div className="flex gap-4 items-center">
                         <div className="text-4xl max-w-6 leading-11 text-white">
@@ -27,11 +27,11 @@ function AuthLayout({ children }: { children: ReactNode }) {
                 </div>
             </div>
 
-            <div className="relative flex-6 items-center justify-center flex flex-col bg-[#f8f9fb]">
-                <div className="absolute top-6 left-6">
+            <div className="relative flex flex-6 flex-col items-center justify-center bg-[#f9f9f8]">
+                <div className="absolute left-6 top-6">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-blue-600 transition-colors"
+                        className="inline-flex items-center gap-1 text-sm text-[#6e7977] transition-colors hover:text-[#004d48]"
                     >
                         <IconArrowLeft size={14} /> Back to home
                     </Link>

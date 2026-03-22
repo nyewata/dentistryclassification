@@ -138,4 +138,38 @@
     background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px);
     background-size: 24px 24px;
   }
+
+  /* DenteAI landing (code.html) */
+  .font-dente-headline {
+    font-family: var(--font-dente-headline), ui-sans-serif, system-ui, sans-serif;
+  }
+  .font-dente-body {
+    font-family: var(--font-dente-body), ui-sans-serif, system-ui, sans-serif;
+  }
+  .clinical-gradient {
+    background: linear-gradient(135deg, #004d48 0%, #006761 100%);
+  }
+  .glass-nav {
+    background: rgba(249, 249, 248, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .ghost-border-bottom {
+    border-bottom: 1px solid rgba(190, 201, 199, 0.15);
+  }
+  .ambient-glow {
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(0, 77, 72, 0.03) 0%,
+      rgba(249, 249, 248, 0) 70%
+    );
+  }
+  .glass-panel {
+    background: rgba(249, 249, 248, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .dente-selection {
+    @apply selection:bg-[#a1f1e9] selection:text-[#00201e];
+  }
 }

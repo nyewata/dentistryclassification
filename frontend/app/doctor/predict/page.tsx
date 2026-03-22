@@ -42,34 +42,34 @@ function PredictPage() {
             <PageContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Upload area */}
-                    <div className="rounded-2xl border-2 border-dashed border-gray-300 bg-white p-8 flex flex-col items-center justify-center min-h-[320px] hover:border-blue-400 hover:bg-blue-50/30 transition-colors cursor-pointer">
-                        <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 mb-4">
+                    <div className="flex min-h-[320px] cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#bec9c7]/70 bg-white p-8 transition-colors hover:border-[#006761]/50 hover:bg-[#f3f4f3]/50">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#e8f5f3] text-[#004d48]">
                             <IconUpload size={28} />
                         </div>
-                        <p className="text-sm font-medium text-gray-700 mb-1">
+                        <p className="mb-1 text-sm font-medium text-[#191c1c]">
                             Drop your image here
                         </p>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-[#6e7977]">
                             PNG, JPG up to 10MB
                         </p>
                     </div>
 
                     {/* Instructions */}
-                    <div className="rounded-2xl border border-gray-200 bg-white p-8">
-                        <h3 className="font-semibold text-gray-900 mb-6">
+                    <div className="rounded-2xl border border-[#bec9c7]/40 bg-white p-8 shadow-sm">
+                        <h3 className="mb-6 font-semibold text-[#191c1c]">
                             How it works
                         </h3>
                         <div className="space-y-5">
                             {steps.map((step, i) => (
                                 <div key={step.title} className="flex gap-4">
-                                    <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#f3f4f3] text-[#004d48]">
                                         <step.icon size={18} />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-800">
+                                        <p className="text-sm font-medium text-[#191c1c]">
                                             {i + 1}. {step.title}
                                         </p>
-                                        <p className="text-xs text-gray-500 mt-0.5">
+                                        <p className="mt-0.5 text-xs text-[#3e4947]">
                                             {step.description}
                                         </p>
                                     </div>

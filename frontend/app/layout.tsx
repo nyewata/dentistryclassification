@@ -6,6 +6,8 @@ import {
     DM_Serif_Display,
     DM_Sans,
     Caveat,
+    Manrope,
+    Inter,
 } from "next/font/google";
 import "./globals.css";
 import { authClient } from "@/lib/auth/client";
@@ -39,6 +41,16 @@ const caveat = Caveat({
     variable: "--font-handwritten",
 });
 
+const manrope = Manrope({
+    subsets: ["latin"],
+    variable: "--font-dente-headline",
+});
+
+const inter = Inter({
+    subsets: ["latin"],
+    variable: "--font-dente-body",
+});
+
 export const metadata: Metadata = {
     title: "Dentistry Classification",
     description: "AI-powered dental X-ray analysis for accurate diagnosis support",
@@ -52,7 +64,7 @@ export default function RootLayout({
     return (
         <html
             lang="en"
-            className={`${outfit.variable} ${dmSerif.variable} ${dmSans.variable} ${caveat.variable}`}
+            className={`${outfit.variable} ${dmSerif.variable} ${dmSans.variable} ${caveat.variable} ${manrope.variable} ${inter.variable}`}
             suppressHydrationWarning
         >
             <body

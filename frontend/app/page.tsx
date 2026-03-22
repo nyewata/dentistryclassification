@@ -1,334 +1,256 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import {
-    TypographyH1,
-    TypographyH2,
-    TypographyP,
-    HandwrittenText,
-} from "@/components/landing/typography";
-import Navbar from "@/components/landing/navbar";
-import TeethBackground from "@/components/landing/teeth-background";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Image from "next/image";
+import LandingShell from "@/components/landing/landing-shell";
 import {
     IconArrowRight,
     IconUpload,
     IconBrain,
-    IconReportMedical,
+    IconCircleCheck,
+    IconCpu,
+    IconBrandDatabricks,
 } from "@tabler/icons-react";
-import Link from "next/link";
-import Image from "next/image";
-import { motion } from "motion/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+const HERO_IMG =
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuAsZ2acIfE_Uh3zhHX7Osu-hrDO1B6R0zYYVwiL5CNfRMg8btf-h_POL2IY_6NtodVwYZY_7KmTLt-2GhOlfuoPxJuuZQccrUpZf9XGBzQJKowmRIiZp7L5fpBiKlh8ZlJi6IhwKm6njwv5hLpakYy2UfxmV28-DaDQT8MclxfmLYK7gio_oFcOGofxoyUScODYRtPkrqiME0a1y7i07gEjyeH6ElX0TdYo6OWMOCBldig_3LjHjTfroTT1ypixiJYKaVjBFp2wzgXj";
 
-const heroStagger = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.15 } },
-};
-const heroFadeUp = {
-    hidden: { opacity: 0, y: 24 },
-    visible: { opacity: 1, y: 0 },
-};
-
-const steps = [
-    {
-        num: "01",
-        icon: <IconUpload size={24} className="text-[var(--dental-teal)]" />,
-        title: "Upload X-Ray",
-        description:
-            "Upload a dental X-ray or intraoral image. We accept common formats like JPEG and PNG.",
-    },
-    {
-        num: "02",
-        icon: <IconBrain size={24} className="text-[var(--dental-teal)]" />,
-        title: "AI Analysis",
-        description:
-            "Our deep learning model examines the image and classifies the dental condition in seconds.",
-    },
-    {
-        num: "03",
-        icon: <IconReportMedical size={24} className="text-[var(--dental-teal)]" />,
-        title: "View Results",
-        description:
-            "Receive an instant classification with confidence scores to support clinical decisions.",
-    },
-];
+const CTA_PATTERN_IMG =
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuB0eahzZF8si5z8sdwMNQoAOyHrhtxuaWmRaAxu51mjfE8In_HpRCDeCjAXDRQt5I915SkB1dnlIFRAsM5CZHTrrtArBvpLQRjhPFSxpqN620dIHOlqkdxF0fbJEAoONv7IpJIhte2zkY3drVLhyA0iBMVEVQzoHmTZc3zuOor3axTdJ0ctCpPkyvXyCZImj-jJggH_RNaSE1tXITybY3nnGXdlaGnTWodGzC3oiFBJQHIin2Lj3VNtp1vTKD9upR8oHAf3bMxtnadA";
 
 export default function Home() {
-    const aboutRef = useRef<HTMLElement>(null);
-    const processRef = useRef<HTMLElement>(null);
-    const ctaRef = useRef<HTMLElement>(null);
-    const dividerRefs = useRef<(HTMLHRElement | null)[]>([]);
-
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            // About section
-            if (aboutRef.current) {
-                gsap.from(aboutRef.current.querySelectorAll(".gsap-about"), {
-                    y: 50,
-                    opacity: 0,
-                    duration: 0.9,
-                    stagger: 0.15,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: aboutRef.current,
-                        start: "top 75%",
-                        once: true,
-                    },
-                });
-            }
-
-            // Process section – heading
-            if (processRef.current) {
-                gsap.from(
-                    processRef.current.querySelector(".gsap-process-heading"),
-                    {
-                        y: 40,
-                        opacity: 0,
-                        duration: 0.8,
-                        ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: processRef.current,
-                            start: "top 75%",
-                            once: true,
-                        },
-                    }
-                );
-
-                // Process steps – staggered
-                gsap.from(
-                    processRef.current.querySelectorAll(".gsap-step"),
-                    {
-                        x: -40,
-                        opacity: 0,
-                        duration: 0.7,
-                        stagger: 0.2,
-                        ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: processRef.current,
-                            start: "top 60%",
-                            once: true,
-                        },
-                    }
-                );
-            }
-
-            // CTA section
-            if (ctaRef.current) {
-                gsap.from(ctaRef.current.querySelectorAll(".gsap-cta"), {
-                    scale: 0.9,
-                    opacity: 0,
-                    duration: 0.8,
-                    stagger: 0.15,
-                    ease: "back.out(1.4)",
-                    scrollTrigger: {
-                        trigger: ctaRef.current,
-                        start: "top 75%",
-                        once: true,
-                    },
-                });
-            }
-
-            // Dividers – expand from center
-            dividerRefs.current.forEach((hr) => {
-                if (!hr) return;
-                gsap.from(hr, {
-                    scaleX: 0,
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: hr,
-                        start: "top 85%",
-                        once: true,
-                    },
-                });
-            });
-        });
-
-        return () => ctx.revert();
-    }, []);
-
     return (
-        <div className="relative bg-[var(--bg-warm)] dot-grid overflow-hidden">
-            <TeethBackground count={60} seed={7} />
-            <Navbar />
-
-            {/* ══════════ Hero ══════════ */}
-            <motion.section
-                variants={heroStagger}
-                initial="hidden"
-                animate="visible"
-                className="relative mx-auto grid min-h-screen max-w-4xl gap-12 px-6 pt-32 pb-20 md:grid-cols-[1.2fr_1fr] md:items-center"
-            >
-                <div className="grid gap-6">
-                    <motion.div variants={heroFadeUp}>
-                        <TypographyH1>Dentistry</TypographyH1>
-                        <TypographyH1>Classification</TypographyH1>
-                    </motion.div>
-
-                    <motion.div variants={heroFadeUp}>
-                        <HandwrittenText>
-                            detect dental problems early, with confidence
-                        </HandwrittenText>
-                    </motion.div>
-
-                    <motion.p
-                        variants={heroFadeUp}
-                        className="max-w-md text-[#4a4a5a] font-[family-name:var(--font-body)] leading-relaxed"
-                    >
-                        AI-powered dental X-ray analysis that helps clinicians
-                        identify cavities, periodontal disease, and other
-                        conditions&mdash;fast.
-                    </motion.p>
-
-                    <motion.div variants={heroFadeUp}>
-                        <Link href="/login">
-                            <Button
-                                variant="rounded"
-                                className="h-11 gap-2 px-7 text-base"
-                            >
-                                Start Prediction
-                                <IconArrowRight size={18} />
-                            </Button>
-                        </Link>
-                    </motion.div>
-                </div>
-
-                <motion.div
-                    variants={heroFadeUp}
-                    className="relative hidden md:block"
-                >
-                    <div className="overflow-hidden rounded-2xl border border-[var(--dental-teal)]/30 shadow-lg">
-                        <Image
-                            src="/images/teeth-doctor.jpg"
-                            alt="Dental professional examining an X-ray"
-                            width={520}
-                            height={400}
-                            className="h-auto w-full object-cover"
-                            priority
-                        />
-                    </div>
-                </motion.div>
-            </motion.section>
-
-            {/* ── Divider ── */}
-            <div className="mx-auto max-w-4xl px-6">
-                <hr ref={(el) => { dividerRefs.current[0] = el; }} className="border-[#d0d0d8] origin-center" />
-            </div>
-
-            {/* ══════════ About ══════════ */}
-            <section
-                ref={aboutRef}
-                className="mx-auto grid min-h-screen max-w-4xl content-center gap-6 px-6 py-28"
-            >
-                <div className="gsap-about">
-                    <TypographyH2>What is Dental Classification?</TypographyH2>
-                </div>
-
-                <div className="gsap-about max-w-2xl grid gap-0">
-                    <TypographyP>
-                        Dental classification uses deep learning to analyze
-                        dental X-rays and intraoral images, identifying
-                        conditions such as cavities, periodontal disease,
-                        impacted teeth, and other oral pathologies.
-                    </TypographyP>
-                    <TypographyP>
-                        By training on thousands of annotated dental images, the
-                        AI model learns to recognize patterns invisible to the
-                        untrained eye&mdash;enabling faster screening and
-                        supporting clinical decision-making.
-                    </TypographyP>
-                    <TypographyP>
-                        Early detection of dental problems is critical.
-                        Untreated cavities can progress to painful infections,
-                        and undiagnosed periodontal disease can lead to tooth
-                        loss. AI-assisted classification bridges the gap between
-                        routine checkups and specialist review.
-                    </TypographyP>
-                </div>
-            </section>
-
-            {/* ── Divider ── */}
-            <div className="mx-auto max-w-4xl px-6">
-                <hr ref={(el) => { dividerRefs.current[1] = el; }} className="border-[#d0d0d8] origin-center" />
-            </div>
-
-            {/* ══════════ Prediction Process ══════════ */}
-            <section
-                ref={processRef}
-                className="mx-auto grid min-h-screen max-w-4xl content-center gap-12 px-6 py-28"
-            >
-                <div className="gsap-process-heading">
-                    <TypographyH2>Prediction Process</TypographyH2>
-                </div>
-
-                <div className="relative ml-4 sm:ml-8 border-l-2 border-[var(--dental-teal)]/25 pl-8 sm:pl-12 grid gap-16">
-                    {steps.map((step) => (
-                        <div key={step.num} className="gsap-step relative">
-                            <div className="absolute -left-[calc(2rem+5px)] sm:-left-[calc(3rem+5px)] top-1 h-2.5 w-2.5 rounded-full bg-[var(--dental-teal)]" />
-
-                            <div className="flex items-start gap-4">
-                                <span className="shrink-0 text-4xl font-[family-name:var(--font-serif)] text-[#4A9E9666] leading-none">
-                                    {step.num}
+        <LandingShell>
+            <main className="flex flex-col">
+                {/* Hero */}
+                <section className="relative overflow-hidden px-8 pb-24 pt-8 md:pb-40 md:pt-12">
+                    <div className="mx-auto flex max-w-7xl flex-col items-center gap-16 md:flex-row md:gap-24">
+                        <div className="flex-1 space-y-8">
+                            <div className="inline-flex items-center gap-2 rounded-full border border-[#bec9c7]/40 bg-[#f3f4f3] px-3 py-1">
+                                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#004d48]" />
+                                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#004d48]">
+                                    CNN + Transformer · Doctor portal
                                 </span>
-                                <div className="grid gap-1.5 pt-1">
-                                    <div className="flex items-center gap-2">
-                                        {step.icon}
-                                        <h3 className="text-lg font-semibold text-[var(--dark-teal)] font-[family-name:var(--font-body)]">
-                                            {step.title}
-                                        </h3>
-                                    </div>
-                                    <p className="text-sm leading-relaxed text-[#4a4a5a] font-[family-name:var(--font-body)] max-w-md">
-                                        {step.description}
+                            </div>
+                            <h1 className="font-dente-headline text-5xl font-extralight leading-[1.1] tracking-tight text-[#191c1c] md:text-7xl">
+                                AI classification <br />
+                                <span className="italic text-[#004d48]">
+                                    for dentists.
+                                </span>
+                            </h1>
+                            <p className="max-w-xl font-dente-body text-lg font-light leading-relaxed text-[#3e4947] md:text-xl">
+                                Upload dental radiographs or intraoral images,
+                                pick a model, and get condition predictions with
+                                confidence scores—then track everything from your
+                                doctor dashboard. Designed for dentists and oral
+                                health professionals; always use alongside your
+                                clinical judgment.
+                            </p>
+                            <div className="flex flex-wrap items-center gap-6 pt-4">
+                                <Link
+                                    href="/login"
+                                    className="clinical-gradient rounded-full px-8 py-4 text-base font-medium text-white shadow-xl shadow-[#004d48]/20 transition-transform hover:scale-105"
+                                >
+                                    Open doctor workspace
+                                </Link>
+                                <Link
+                                    href="/about"
+                                    className="group flex items-center gap-2 font-medium text-[#004d48]"
+                                >
+                                    Explore the tech
+                                    <IconArrowRight
+                                        size={20}
+                                        className="transition-transform group-hover:translate-x-1"
+                                    />
+                                </Link>
+                            </div>
+                        </div>
+                        <div className="relative flex-1">
+                            <div className="relative aspect-square w-full overflow-hidden rounded-3xl shadow-2xl">
+                                <Image
+                                    src={HERO_IMG}
+                                    alt="Clinical dental radiograph"
+                                    fill
+                                    className="object-cover brightness-110 grayscale"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    priority
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-tr from-[#004d48]/20 to-transparent" />
+                                <div className="absolute left-1/4 top-1/4 h-0.5 w-1/2 animate-[bounce_4s_infinite] bg-[#004d48]/40 shadow-[0_0_15px_rgba(0,77,72,0.5)]" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Precision + Neural */}
+                <section className="bg-[#f3f4f3] py-24">
+                    <div className="mx-auto max-w-7xl px-8">
+                        <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
+                            <div className="flex flex-col justify-between rounded-[2rem] border border-[#bec9c7]/10 bg-white p-12 shadow-sm md:col-span-7">
+                                <div>
+                                    <h3 className="font-dente-headline mb-4 text-3xl font-light text-[#191c1c]">
+                                        Models & confidence
+                                    </h3>
+                                    <p className="mb-12 max-w-md font-dente-body font-light text-[#3e4947]">
+                                        Your dashboard surfaces how many
+                                        predictions you&apos;ve run and the{" "}
+                                        <strong className="font-medium text-[#191c1c]">
+                                            average confidence
+                                        </strong>{" "}
+                                        across runs—so you can monitor model
+                                        behavior over time in your own practice.
                                     </p>
+                                </div>
+                                <div className="space-y-8">
+                                    <div className="flex items-end justify-between">
+                                        <div className="flex flex-col">
+                                            <span className="font-dente-headline text-5xl font-light text-[#004d48]">
+                                                94%
+                                            </span>
+                                            <span className="mt-1 text-xs uppercase tracking-tighter text-[#6e7977]">
+                                                Example avg. confidence
+                                            </span>
+                                        </div>
+                                        <div className="flex h-32 items-end gap-2">
+                                            <div className="h-[40%] w-12 rounded-t-lg bg-[#e7e8e7]" />
+                                            <div className="h-[65%] w-12 rounded-t-lg bg-[#e7e8e7]" />
+                                            <div className="h-[95%] w-12 rounded-t-lg bg-[#004d48] shadow-lg shadow-[#004d48]/20" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-[#004d48] p-12 text-white md:col-span-5">
+                                <div className="absolute -right-8 -top-8 h-64 w-64 translate-x-1/2 -translate-y-1/2 rounded-full bg-white/5 blur-3xl" />
+                                <div className="relative z-10">
+                                    <div className="mb-2 flex items-center gap-3">
+                                        <IconCpu size={32} className="opacity-90" />
+                                        <IconBrandDatabricks
+                                            size={32}
+                                            className="opacity-90"
+                                        />
+                                    </div>
+                                    <h3 className="font-dente-headline mb-4 text-2xl font-light">
+                                        Two ways to classify
+                                    </h3>
+                                    <p className="font-dente-body text-sm font-light leading-relaxed text-[#a1f1e9]/80">
+                                        Use standard CNN prediction (ResNet,
+                                        Inception, DenseNet, EfficientNet) or
+                                        open{" "}
+                                        <strong className="font-medium text-white">
+                                            Transformer Predict
+                                        </strong>{" "}
+                                        for a transformer-based pathway—same
+                                        upload flow, different architecture.
+                                    </p>
+                                </div>
+                                <div className="relative z-10 mt-12 rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur-sm">
+                                    <div className="mb-2 flex justify-between font-mono text-xs">
+                                        <span>Prediction run</span>
+                                        <span>Confidence</span>
+                                    </div>
+                                    <div className="h-1 w-full overflow-hidden rounded-full bg-white/20">
+                                        <div className="h-full w-[94%] bg-white" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* ── Divider ── */}
-            <div className="mx-auto max-w-4xl px-6">
-                <hr ref={(el) => { dividerRefs.current[2] = el; }} className="border-[#d0d0d8] origin-center" />
-            </div>
-
-            {/* ══════════ Handwritten Quote + CTA ══════════ */}
-            <section
-                ref={ctaRef}
-                className="mx-auto grid min-h-screen max-w-4xl place-items-center gap-8 px-6 py-28 text-center"
-            >
-                <div className="grid place-items-center gap-8">
-                    <div className="gsap-cta">
-                        <HandwrittenText className="text-3xl md:text-4xl lg:text-5xl rotate-0 leading-snug">
-                            Every smile deserves the best diagnosis.
-                        </HandwrittenText>
                     </div>
+                </section>
 
-                    <div className="gsap-cta">
-                        <Link href="/login">
-                            <Button
-                                variant="rounded"
-                                className="h-11 gap-2 px-7 text-base"
+                {/* Diagnostic flow */}
+                <section className="px-8 py-32">
+                    <div className="mx-auto max-w-7xl">
+                        <div className="mb-24 text-center">
+                            <h2 className="font-dente-headline text-4xl font-light tracking-tight text-[#191c1c]">
+                                How it works in the app
+                            </h2>
+                            <div className="mx-auto mt-6 h-1 w-12 rounded-full bg-[#004d48]" />
+                        </div>
+                        <div className="grid grid-cols-1 gap-16 md:grid-cols-3">
+                            {[
+                                {
+                                    icon: (
+                                        <IconUpload
+                                            className="text-3xl"
+                                            stroke={1.25}
+                                        />
+                                    ),
+                                    title: "Upload image",
+                                    body: "Add a dental X-ray or intraoral photo (PNG or JPG, up to 10MB) from the Predict screen after you sign in.",
+                                },
+                                {
+                                    icon: (
+                                        <IconBrain
+                                            className="text-3xl"
+                                            stroke={1.25}
+                                        />
+                                    ),
+                                    title: "Choose model & run",
+                                    body: "Select a CNN backbone for standard prediction or use Transformer Predict; confirm your inputs before processing.",
+                                },
+                                {
+                                    icon: (
+                                        <IconCircleCheck
+                                            className="text-3xl"
+                                            stroke={1.25}
+                                        />
+                                    ),
+                                    title: "Results & history",
+                                    body: "View the predicted class with a confidence score; find past runs anytime under Past Predictions with search.",
+                                },
+                            ].map((item) => (
+                                <div
+                                    key={item.title}
+                                    className="group flex flex-col items-center text-center"
+                                >
+                                    <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#e7e8e7] transition-all duration-500 group-hover:bg-[#006761] group-hover:text-white">
+                                        {item.icon}
+                                    </div>
+                                    <h4 className="font-dente-headline mb-4 text-xl font-light">
+                                        {item.title}
+                                    </h4>
+                                    <p className="font-dente-body px-4 text-sm font-light leading-relaxed text-[#3e4947]">
+                                        {item.body}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* CTA */}
+                <section className="px-8 pb-32">
+                    <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[3rem] border border-[#bec9c7]/10 bg-[#f3f4f3] p-12 text-center md:p-24">
+                        <div className="pointer-events-none absolute inset-0 opacity-10">
+                            <Image
+                                src={CTA_PATTERN_IMG}
+                                alt=""
+                                fill
+                                className="object-cover"
+                                sizes="100vw"
+                            />
+                        </div>
+                        <div className="relative z-10">
+                            <h2 className="font-dente-headline mb-8 text-4xl font-light text-[#191c1c] md:text-5xl">
+                                Ready to use it <br />
+                                in your practice?
+                            </h2>
+                            <p className="font-dente-body mx-auto mb-12 max-w-xl text-lg font-light text-[#3e4947]">
+                                Register or sign in to access the dentist
+                                dashboard: overview, prediction, history, and
+                                transformer tools in one place.
+                            </p>
+                            <Link
+                                href="/login"
+                                className="inline-block rounded-full bg-[#004d48] px-12 py-5 text-lg font-medium text-white transition-all hover:-translate-y-1 hover:shadow-2xl"
                             >
-                                Start Prediction
-                                <IconArrowRight size={18} />
-                            </Button>
-                        </Link>
+                                Sign in to dashboard
+                            </Link>
+                            <p className="font-dente-body mt-8 text-xs uppercase tracking-widest text-[#6e7977]">
+                                New users: create an account from Register
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </section>
-
-            {/* ══════════ Footer ══════════ */}
-            <footer className="border-t border-[#d0d0d8]">
-                <div className="mx-auto max-w-4xl px-6 py-6 text-center text-xs text-[#7a7a8a] font-[family-name:var(--font-body)]">
-                    &copy; 2026 Dentistry Classification. All rights reserved.
-                </div>
-            </footer>
-        </div>
+                </section>
+            </main>
+        </LandingShell>
     );
 }

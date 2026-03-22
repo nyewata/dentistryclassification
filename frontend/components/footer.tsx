@@ -2,7 +2,9 @@ import React from "react";
 
 function Footer() {
     return (
-        <div className="text-primary font-medium">@2026 copyright, all rights reserved.</div>
+        <div className="text-center text-xs font-medium text-[#6e7977]">
+            © {new Date().getFullYear()} Dentistry Classification
+        </div>
     );
 }
 

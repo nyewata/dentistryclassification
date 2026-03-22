@@ -16,6 +16,26 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+### Neon Auth / login (local vs Vercel)
+
+Production on **Vercel uses HTTPS**, so `__Secure-neon-auth` session cookies work reliably.
+
+On **plain `http://localhost`**, some browsers will not keep or send those cookies the same way, so **sign-in can succeed for `/api/auth/*` but `/doctor` still redirects to login**.
+
+**Fix for local development:**
+
+1. Prefer **HTTPS dev** (matches production):
+
+   ```bash
+   npm run dev:https
+   ```
+
+   Open **`https://localhost:3000`** and accept the self-signed certificate warning.
+
+2. If you stay on HTTP, use **`http://localhost:3000`** (hostname `localhost`), not `http://127.0.0.1:3000`, and ensure `NEON_AUTH_BASE_URL` / Neon dashboard allow your dev origin if required.
+
+The app rewrites auth `Set-Cookie` **`Path`** from `/api/auth` to `/` so the session is sent on routes like `/doctor` (see `app/api/auth/[...path]/route.ts`).
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

@@ -2,7 +2,6 @@
 
 import { PageContainer, PageContent } from "@/components/container";
 import { PageTitle } from "@/components/title";
-import { Button } from "@/components/ui/button";
 import {
     IconUser,
     IconMail,
@@ -70,7 +69,7 @@ function ProfilePage() {
             <PageContainer>
                 <PageTitle>Profile</PageTitle>
                 <PageContent>
-                    <div className="flex items-center justify-center h-48 text-gray-400 text-sm">
+                    <div className="flex h-48 items-center justify-center text-sm text-[#6e7977]">
                         Loading...
                     </div>
                 </PageContent>
@@ -83,7 +82,7 @@ function ProfilePage() {
             <div className="mb-2">
                 <Link
                     href="/doctor"
-                    className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-blue-600 transition-colors"
+                    className="inline-flex items-center gap-1 text-sm text-[#6e7977] transition-colors hover:text-[#004d48]"
                 >
                     <IconArrowLeft size={14} /> Back to Dashboard
                 </Link>
@@ -94,33 +93,35 @@ function ProfilePage() {
             <PageContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                     {/* User Info */}
-                    <div className="rounded-2xl border border-gray-200 bg-white p-8">
-                        <h3 className="font-semibold text-gray-900 mb-6">Account Information</h3>
+                    <div className="rounded-2xl border border-[#bec9c7]/40 bg-white p-8 shadow-sm">
+                        <h3 className="mb-6 font-semibold text-[#191c1c]">
+                            Account Information
+                        </h3>
 
                         <div className="space-y-5">
                             <div className="flex items-center gap-4">
-                                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#f3f4f3] text-[#004d48]">
                                     <IconUser size={18} />
                                 </div>
                                 <div>
-                                    <div className="text-xs text-gray-400 uppercase tracking-wider mb-0.5">
+                                    <div className="mb-0.5 text-xs uppercase tracking-wider text-[#6e7977]">
                                         Full Name
                                     </div>
-                                    <div className="text-sm font-medium text-gray-900">
+                                    <div className="text-sm font-medium text-[#191c1c]">
                                         {user?.name || "—"}
                                     </div>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#f3f4f3] text-[#004d48]">
                                     <IconMail size={18} />
                                 </div>
                                 <div>
-                                    <div className="text-xs text-gray-400 uppercase tracking-wider mb-0.5">
+                                    <div className="mb-0.5 text-xs uppercase tracking-wider text-[#6e7977]">
                                         Email
                                     </div>
-                                    <div className="text-sm font-medium text-gray-900">
+                                    <div className="text-sm font-medium text-[#191c1c]">
                                         {user?.email || "—"}
                                     </div>
                                 </div>
@@ -129,10 +130,12 @@ function ProfilePage() {
                     </div>
 
                     {/* Change Password */}
-                    <div className="rounded-2xl border border-gray-200 bg-white p-8">
-                        <div className="flex items-center gap-2 mb-6">
-                            <IconLock size={18} className="text-blue-600" />
-                            <h3 className="font-semibold text-gray-900">Change Password</h3>
+                    <div className="rounded-2xl border border-[#bec9c7]/40 bg-white p-8 shadow-sm">
+                        <div className="mb-6 flex items-center gap-2">
+                            <IconLock size={18} className="text-[#004d48]" />
+                            <h3 className="font-semibold text-[#191c1c]">
+                                Change Password
+                            </h3>
                         </div>
 
                         {pwStatus && (
@@ -154,7 +157,7 @@ function ProfilePage() {
 
                         <form onSubmit={handleChangePassword} className="space-y-4">
                             <div>
-                                <label className="block text-xs text-gray-500 mb-1.5">
+                                <label className="mb-1.5 block text-xs text-[#3e4947]">
                                     Current Password
                                 </label>
                                 <input
@@ -162,12 +165,12 @@ function ProfilePage() {
                                     value={currentPassword}
                                     onChange={(e) => setCurrentPassword(e.target.value)}
                                     required
-                                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                                    className="w-full rounded-lg border border-[#bec9c7]/60 px-3 py-2 text-sm text-[#191c1c] outline-none transition-all focus:border-[#004d48] focus:ring-2 focus:ring-[#a1f1e9]/50"
                                     placeholder="Enter current password"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs text-gray-500 mb-1.5">
+                                <label className="mb-1.5 block text-xs text-[#3e4947]">
                                     New Password
                                 </label>
                                 <input
@@ -175,12 +178,12 @@ function ProfilePage() {
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     required
-                                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                                    className="w-full rounded-lg border border-[#bec9c7]/60 px-3 py-2 text-sm text-[#191c1c] outline-none transition-all focus:border-[#004d48] focus:ring-2 focus:ring-[#a1f1e9]/50"
                                     placeholder="At least 8 characters"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs text-gray-500 mb-1.5">
+                                <label className="mb-1.5 block text-xs text-[#3e4947]">
                                     Confirm New Password
                                 </label>
                                 <input
@@ -188,18 +191,17 @@ function ProfilePage() {
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     required
-                                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                                    className="w-full rounded-lg border border-[#bec9c7]/60 px-3 py-2 text-sm text-[#191c1c] outline-none transition-all focus:border-[#004d48] focus:ring-2 focus:ring-[#a1f1e9]/50"
                                     placeholder="Re-enter new password"
                                 />
                             </div>
-                            <Button
+                            <button
                                 type="submit"
                                 disabled={changingPw}
-                                className="w-full"
-                                size="lg"
+                                className="clinical-gradient h-11 w-full rounded-full px-4 text-sm font-medium text-white shadow-md shadow-[#004d48]/20 transition-all hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                                 {changingPw ? "Changing..." : "Update Password"}
-                            </Button>
+                            </button>
                         </form>
                     </div>
                 </div>

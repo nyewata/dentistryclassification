@@ -46,15 +46,15 @@ export function DoctorShell({
     }
 
     return (
-        <div className="h-screen w-full flex bg-[#f8f9fb]">
+        <div className="h-screen w-full flex bg-[#f9f9f8]">
             {/* Top-right toolbar */}
-            <div className="z-10 flex gap-1.5 absolute right-8 top-8 p-2 border border-gray-200 rounded-4xl bg-white shadow-sm">
+            <div className="z-10 flex gap-1.5 absolute right-8 top-8 rounded-4xl border border-[#bec9c7]/40 bg-white/90 p-2 shadow-sm backdrop-blur-sm">
                 <Tooltip>
                     <TooltipTrigger
                         render={
                             <Link
                                 href="/doctor/profile"
-                                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 h-8 text-sm font-medium text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                                className="inline-flex h-8 items-center gap-1.5 rounded-full border border-[#bec9c7]/50 bg-white px-3 text-sm font-medium text-[#004d48] transition-colors hover:border-[#004d48]/30 hover:bg-[#f3f4f3]"
                             >
                                 <IconUser size={16} /> {userName}
                             </Link>
@@ -69,7 +69,7 @@ export function DoctorShell({
                     <TooltipTrigger
                         render={
                             <Button
-                                className="rounded-full border-gray-200 relative hover:bg-blue-50 hover:border-blue-200 text-blue-600"
+                                className="relative rounded-full border-[#bec9c7]/50 text-[#004d48] hover:border-[#004d48]/30 hover:bg-[#f3f4f3]"
                                 variant="outline"
                                 size="icon"
                             >
@@ -89,7 +89,7 @@ export function DoctorShell({
                     <TooltipTrigger
                         render={
                             <Button
-                                className="rounded-full border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 text-gray-500"
+                                className="rounded-full border-[#bec9c7]/50 text-[#6e7977] hover:border-red-200 hover:bg-red-50 hover:text-red-600"
                                 variant="outline"
                                 size="icon"
                                 onClick={handleLogout}
@@ -112,17 +112,17 @@ export function DoctorShell({
 
             {/* Bottom nav */}
             <div className="z-10 flex absolute bottom-8 items-center justify-center w-full">
-                <nav className="flex border border-gray-200 p-2 rounded-4xl gap-1.5 bg-white shadow-md">
+                <nav className="flex gap-1.5 rounded-4xl border border-[#bec9c7]/40 bg-white/95 p-2 shadow-md backdrop-blur-sm">
                     {NAV_ITEMS.map((item) => {
                         const isActive = pathname === item.href;
                         return (
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`inline-flex items-center gap-1.5 rounded-4xl px-4 h-8 text-sm font-medium transition-all ${
+                                className={`inline-flex h-8 items-center gap-1.5 rounded-4xl px-4 text-sm font-medium transition-all ${
                                     isActive
-                                        ? "bg-blue-600 text-white shadow-sm"
-                                        : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                                        ? "clinical-gradient text-white shadow-md shadow-[#004d48]/25"
+                                        : "text-[#3e4947] hover:bg-[#f3f4f3] hover:text-[#004d48]"
                                 }`}
                             >
                                 <item.icon size={16} /> {item.label}
